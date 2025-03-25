@@ -1,5 +1,4 @@
 import { Component, ContentChild, TemplateRef } from '@angular/core';
-import { MenuComponent } from '../../Shared/menu/menu.component';
 import { Observable } from 'rxjs';
 import { BackService } from '../../service/backservice';
 import { CommonModule } from '@angular/common';
@@ -9,7 +8,7 @@ import { TareaRequest } from '../../model/Request/tareaRequest';
 
 @Component({
   selector: 'app-create',
-  imports: [MenuComponent, CommonModule,  ReactiveFormsModule ],
+  imports: [ CommonModule,  ReactiveFormsModule ],
   templateUrl: './create.component.html',
   styleUrl: './create.component.scss'
 })

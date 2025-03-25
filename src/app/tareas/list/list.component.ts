@@ -4,6 +4,8 @@ import { Tareas } from '../../model/Response/tareasListResponse';
 import { NgFor } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { TareaCheck } from '../../model/Request/tareaCheck';
+import { AsignacionTareaRequest } from '../../model/Request/asignacionTareaRequest';
+import { Router } from '@angular/router';
 
 
 
@@ -16,25 +18,38 @@ import { TareaCheck } from '../../model/Request/tareaCheck';
 
 export class ListComponent implements  OnDestroy {
   @Output() event = new EventEmitter<void>();
+  @Output() eventAsignacion = new EventEmitter<void>();
 
-
+ component: number = 1
 
   tareas: Tareas[] = [];
-  filteredTareas: Tareas[] = [];
+  tareasAsignadas: AsignacionTareaRequest[] = []
 
-  private readonly tareaserviceSubscription: Subscription | undefined;
-  constructor(private readonly backService: BackService) {
+
+  private tareaserviceSubscription: Subscription | undefined;
+  private tareaAsignadasserviceSubscription: Subscription | undefined;
+
+  constructor(private readonly backService: BackService, public router: Router) {
+
+    this.initialStates();
+  }
+
+  initialStates(){
     this.tareaserviceSubscription = this.backService.currentTareas.subscribe(
       subCurrent =>{
         this.tareas = subCurrent
-        this.filteredTareas = this.tareas
-      }
-    )
+      })
 
+    this.tareaAsignadasserviceSubscription = this.backService.currentTareasAsingnadas.subscribe(
+      tarAsig =>{
+        this.tareasAsignadas = tarAsig
+      })
   }
+
 
   ngOnDestroy(): void {
     this.tareaserviceSubscription?.unsubscribe();
+    this.tareaAsignadasserviceSubscription?.unsubscribe();
   }
 
 
@@ -67,16 +82,30 @@ export class ListComponent implements  OnDestroy {
     })
   }
 
-  FiltrarLista(isCompleted: boolean| null){
-    if (isCompleted === null) {
-       this.filteredTareas = this.tareas
-    } else {
-      this.filteredTareas = this.tareas.filter(data => data.IsCompleted === isCompleted);
-    }
 
-
+  cambiarTablaTareas(tabla: number){
+    this.component = tabla;
   }
 
+
+  eliminarAsignacionTarea(idAsignacion: number){
+    this.backService.EliminarAsignacionTarea(idAsignacion)
+    .subscribe({
+      next: (data) =>{
+        this.eventAsignacion.emit();
+      },
+      error: (error) =>{
+
+      }
+    })
+  }
+
+
+  verTareaAsignada(tarea: Tareas){
+    this.backService.setCurrentTareasinAsignar(tarea);
+    this.backService.setCurrentIsTareasinAsignar(false)
+    this.router.navigate(['create/editarTarea']);
+  }
 
 
 }

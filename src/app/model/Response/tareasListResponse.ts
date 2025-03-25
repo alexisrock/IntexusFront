@@ -1,7 +1,7 @@
 export type tareasListResponse = Tareas[]
 
 export interface Tareas {
-  IdTarea: number
+  Id: number
   NameTarea: string
   DescriptionTarea: string
   IsCompleted: boolean
