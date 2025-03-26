@@ -6,14 +6,21 @@
   <div class="p-4">
 
     <h2>Tareas</h2>
+    <div class="col-lg-7 col-md-8 col-ms-8">
+      <div *ngIf="loading" class="alert alert-success" role="alert">
+        {{message}}
+      </div>
+    </div>
 
-
-    <form [formGroup]="fg" >
+    <form (submit)="sendForm()" [formGroup]="fg" >
 
       <div class="row mt-2">
         <div class="col-lg-1 col-md-1 col-ms-1"></div>
         <div class="col-lg-10 col-md-10 col-ms-10  border-bottom border-black">
           <input type="text" formControlName="NameTarea" class="form-control-plaintext text-dark"  />
+        </div>
+        <div *ngIf="fg.get('NameTarea')?.invalid && fg.get('NameTarea')?.touched" class="colorRed">
+          El nombre de  la tarea es obligatorio.
         </div>
         <div class="col-lg-1 col-md-1 col-ms-1"></div>
       </div>
@@ -59,5 +66,5 @@
 
   </div>
 </div>
-
+<app-loadding></app-loadding>
 

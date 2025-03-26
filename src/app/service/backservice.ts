@@ -10,6 +10,8 @@ import { TareaRequest } from '../model/Request/tareaRequest';
 import { AuthenticationResponse } from '../model/Response/authenticationResponse';
 import { AsignacionTareaRequest, ListAsignacionTareaRequest } from '../model/Request/asignacionTareaRequest';
 import { UserListResponse } from '../model/Response/userResponse';
+import { TareaUpdateRequest } from '../model/Request/tareaupdateRequest';
+import { AsignacionTareasCreateRequest } from '../model/Request/asignacionTareasCreateRequest';
 
 
 @Injectable({
@@ -98,13 +100,21 @@ export class BackService {
     return this.httpclient.post<BaseResponse>(this.urlBase + 'api/Tarea/Create', request);
   }
 
-
   EliminarAsignacionTarea(idAsignacion: number){
     return this.httpclient.delete<BaseResponse>(this.urlBase + `api/AsignarTarea/Delete/${idAsignacion}`);
   }
 
   GetAllusuarios() {
     return this.httpclient.get<UserListResponse>(this.urlBase + 'api/Usuario/GetAll');
+  }
+
+  EditarTarea(request: TareaUpdateRequest) {
+    return this.httpclient.patch<BaseResponse>(this.urlBase + 'api/Tarea/Update', request);
+  }
+
+  AsignarTarea(request: AsignacionTareasCreateRequest){
+    return this.httpclient.post<BaseResponse>(this.urlBase + 'api/AsignarTarea/Create', request);
+
   }
 
 }

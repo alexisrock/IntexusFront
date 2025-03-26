@@ -36,7 +36,9 @@ export class LoginComponent {
 
 
   sendForm() {
+
     this.service.loadingOn();
+
     if (this.fg.valid) {
       let request = {} as AuthenticationRequest;
       request.Email = this.fg.get('Email')?.value;
@@ -45,7 +47,6 @@ export class LoginComponent {
         .subscribe({
           next: (data) => {
             this.service.loadingOff();
-
             if (data.IdRol !== 3) {
               this.auth.setCoockies(data);
               this.router.navigateByUrl('home');

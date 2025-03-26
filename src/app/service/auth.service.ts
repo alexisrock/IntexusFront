@@ -30,7 +30,12 @@ export class AuthService implements CanActivate {
   getCookies(): AuthenticationResponse | null{
     if (typeof window !== 'undefined' && window.sessionStorage) {
       const data = sessionStorage.getItem('Authentication');
-      const sesion = JSON.parse(data ?? '');
+
+
+      if(!data)
+        return null
+
+      const sesion = JSON.parse(data);
       return sesion
     }else{
       return null;
