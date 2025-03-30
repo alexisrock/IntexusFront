@@ -6,4 +6,6 @@ import { TareaEditComponent } from "../../asignar-tarea-edit/tarea-edit.componen
 export const routes: Routes = [
   { path: '', component: CreateComponent},
   { path: 'editarTarea', component: TareaEditComponent},
+  { path: 'create', component: CreateComponent},
+
 ];

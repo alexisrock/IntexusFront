@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { BackService } from '../service/backservice';
-import { UserCreateRequest } from '../model/Request/userCreateRequest';
-import { LoaddingComponent } from "../Shared/loadding/loadding.component";
+import { BackService } from '../../service/backservice';
+import { UserCreateRequest } from '../../model/Request/userCreateRequest';
+import { LoaddingComponent } from "../../Shared/loadding/loadding.component";
 
 @Component({
   selector: 'app-usuario',

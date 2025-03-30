@@ -1,4 +1,4 @@
-import { UserCreateRequest } from './../model/Request/userCreateRequest';
+import { UserCreateRequest, UserupdateRequest } from './../model/Request/userCreateRequest';
 import { AuthenticationRequest } from './../model/Request/authenticationRequest';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -114,7 +114,14 @@ export class BackService {
 
   AsignarTarea(request: AsignacionTareasCreateRequest){
     return this.httpclient.post<BaseResponse>(this.urlBase + 'api/AsignarTarea/Create', request);
+  }
 
+  EliminarUsuario(idUser:number){
+    return this.httpclient.delete<BaseResponse>(this.urlBase + `api/Usuario/Delete/${idUser}`);
+  }
+
+  EditarUsuario(User:UserupdateRequest){
+    return this.httpclient.put<BaseResponse>(this.urlBase + 'api/Usuario/update', User);
   }
 
 }

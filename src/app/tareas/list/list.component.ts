@@ -5,13 +5,13 @@ import { NgFor } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { TareaCheck } from '../../model/Request/tareaCheck';
 import { AsignacionTareaRequest } from '../../model/Request/asignacionTareaRequest';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 
 
 @Component({
   selector: 'app-list',
-  imports: [NgFor],
+  imports: [NgFor, RouterModule],
   templateUrl: './list.component.html',
   styleUrl: './list.component.scss'
 })

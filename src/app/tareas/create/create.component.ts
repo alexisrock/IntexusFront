@@ -4,11 +4,13 @@ import { BackService } from '../../service/backservice';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TareaRequest } from '../../model/Request/tareaRequest';
+import { LoaddingComponent } from "../../Shared/loadding/loadding.component";
+import { MenuComponent } from "../../Shared/menu/menu.component";
 
 
 @Component({
   selector: 'app-create',
-  imports: [ CommonModule,  ReactiveFormsModule ],
+  imports: [CommonModule, ReactiveFormsModule, LoaddingComponent, MenuComponent],
   templateUrl: './create.component.html',
   styleUrl: './create.component.scss'
 })

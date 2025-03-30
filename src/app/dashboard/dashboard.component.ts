@@ -17,10 +17,8 @@ export class DashboardComponent {
 
 
   constructor(private readonly backService: BackService) {
-
     this.GetTareas();
     this.GetTareasAsignadas();
-
   }
 
 
