@@ -1,9 +1,12 @@
+
 import { Component } from '@angular/core';
 import { MenuComponent } from "../../Shared/menu/menu.component";
-import { RouterModule } from '@angular/router';
+import {  Router, RouterModule } from '@angular/router';
 import { UserResponse } from '../../model/Response/userResponse';
 import { NgFor } from '@angular/common';
 import { BackService } from '../../service/backservice';
+import { AuthService } from '../../service/auth.service';
+
 
 @Component({
   selector: 'app-usuarios',
@@ -14,9 +17,12 @@ import { BackService } from '../../service/backservice';
 export class UsuariosComponent {
 
   usuarios: UserResponse[] = []
+  idUsuario: number |undefined =0
 
-  constructor(private readonly service: BackService) {
+
+  constructor(private readonly service: BackService, private readonly router: Router, private readonly auth: AuthService) {
     this.getAllUsers()
+    this.idUsuario = this.auth.getCookies()?.IdUsuario;
   }
 
 
@@ -41,5 +47,11 @@ export class UsuariosComponent {
     })
   }
 
+
+  editarUsuario(usuario: UserResponse){
+    this.service.setCurrentUsuarioResponse(usuario);
+    this.router.navigate(['usuario/editar']);
+
+  }
 
 }

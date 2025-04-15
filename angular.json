@@ -20,6 +20,7 @@
             "outputPath": "dist/intexus-front",
             "index": "src/index.html",
             "browser": "src/main.ts",
+            "baseHref": "/IntexusFront/",
             "polyfills": [
               "zone.js"
             ],

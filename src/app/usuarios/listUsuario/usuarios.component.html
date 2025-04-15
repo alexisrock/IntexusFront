@@ -19,9 +19,11 @@
       </div>
     </div>
 <br>
+<div class="user-list-container">
+  <div class="list-group  " *ngFor="let item of usuarios; let i = index">
 
-    <div class="list-group" *ngFor="let item of usuarios; let i = index">
-      <div class="list-group-item list-group-item-action ">
+    @if (idUsuario != item.Id) {
+      <div class="list-group-item list-group-item-action">
         <div class="row">
           <div class="col-lg-7  col-md-8 col-ms-8 text-left">
             <p class="text-capitalize fs-3 fw-semibold">{{ item.NameUsuario }}</p>
@@ -40,7 +42,7 @@
 
 
               <div class="col-md-1 col-lg-1">
-                <button class="btn btn-outline-primary  text-primary" > <i class="bi bi-pencil"></i></button>
+                <button class="btn btn-outline-primary  text-primary" (click)="editarUsuario(item)" > <i class="bi bi-pencil"></i></button>
               </div>
               <div class="col-md-1 col-lg-1 "></div>
               <div class="col-md-1 col-lg-1">
@@ -52,7 +54,12 @@
         </div>
       </div>
       <br>
-    </div>
+    }
+
+  </div>
+
+
+</div>
 
 
   </div>

@@ -1,11 +1,12 @@
 import { BackService } from '../../service/backservice';
 import { Component, EventEmitter, OnDestroy, Output } from '@angular/core';
-import { Tareas } from '../../model/Response/tareasListResponse';
+import { AsignacionTarasUsuario, Tareas } from '../../model/Response/tareasListResponse';
 import { NgFor } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { TareaCheck } from '../../model/Request/tareaCheck';
 import { AsignacionTareaRequest } from '../../model/Request/asignacionTareaRequest';
 import { Router, RouterModule } from '@angular/router';
+import { AuthService } from '../../service/auth.service';
 
 
 
@@ -16,34 +17,49 @@ import { Router, RouterModule } from '@angular/router';
   styleUrl: './list.component.scss'
 })
 
-export class ListComponent implements  OnDestroy {
+export class ListComponent implements OnDestroy {
   @Output() event = new EventEmitter<void>();
   @Output() eventAsignacion = new EventEmitter<void>();
-
- component: number = 1
+  idRol: number | undefined = 0
+  component: number = 1
 
   tareas: Tareas[] = [];
   tareasAsignadas: AsignacionTareaRequest[] = []
-
+  asignacionTareaUsuario:AsignacionTarasUsuario[]= []
 
   private tareaserviceSubscription: Subscription | undefined;
   private tareaAsignadasserviceSubscription: Subscription | undefined;
+  private tareaUsuarioserviceSubscription: Subscription | undefined;
 
-  constructor(private readonly backService: BackService, public router: Router) {
+  constructor(private readonly backService: BackService, public router: Router, private readonly auth: AuthService) {
 
     this.initialStates();
   }
 
-  initialStates(){
-    this.tareaserviceSubscription = this.backService.currentTareas.subscribe(
-      subCurrent =>{
-        this.tareas = subCurrent
-      })
+  initialStates() {
+    this.idRol= this.auth.getCookies()?.IdRol;
 
-    this.tareaAsignadasserviceSubscription = this.backService.currentTareasAsingnadas.subscribe(
-      tarAsig =>{
-        this.tareasAsignadas = tarAsig
-      })
+    if (this.idRol==1) {
+      this.tareaserviceSubscription = this.backService.currentTareas.subscribe(
+        subCurrent => {
+          this.tareas = subCurrent
+        })
+
+      this.tareaAsignadasserviceSubscription = this.backService.currentTareasAsingnadas.subscribe(
+        tarAsig => {
+          this.tareasAsignadas = tarAsig
+        })
+
+    }else{
+      this.tareaUsuarioserviceSubscription = this.backService.currentTareasUsuario.subscribe(
+        tareaUsuario=>{
+          this.asignacionTareaUsuario = tareaUsuario
+
+        })
+
+    }
+
+
   }
 
 
@@ -53,59 +69,58 @@ export class ListComponent implements  OnDestroy {
   }
 
 
-   checkTareacompletada(idTarea: number){
+  checkTareacompletada(idTarea: number) {
     this.backService.loadingOn();
-    let request= {} as TareaCheck;
+    let request = {} as TareaCheck;
     request.IdTarea = idTarea
     request.IsCompleted = true
     this.backService.checkTareaCompletada(request)
-    .subscribe({
-      next: (data) =>{
+      .subscribe({
+        next: (data) => {
           this.event.emit();
-      },
-      error: (error) =>{
+        },
+        error: (error) => {
 
-      }
-    })
+        }
+      })
   }
 
 
-  EliminarTarea(idTarea: number){
+  EliminarTarea(idTarea: number) {
     this.backService.EliminarTarea(idTarea)
-    .subscribe({
-      next: (data) =>{
-        this.event.emit();
-      },
-      error: (error) =>{
+      .subscribe({
+        next: (data) => {
+          this.event.emit();
+        },
+        error: (error) => {
 
-      }
-    })
+        }
+      })
   }
 
 
-  cambiarTablaTareas(tabla: number){
+  cambiarTablaTareas(tabla: number) {
     this.component = tabla;
   }
 
 
-  eliminarAsignacionTarea(idAsignacion: number){
+  eliminarAsignacionTarea(idAsignacion: number) {
     this.backService.EliminarAsignacionTarea(idAsignacion)
-    .subscribe({
-      next: (data) =>{
-        this.eventAsignacion.emit();
-      },
-      error: (error) =>{
+      .subscribe({
+        next: (data) => {
+          this.eventAsignacion.emit();
+        },
+        error: (error) => {
 
-      }
-    })
+        }
+      })
   }
 
 
-  verTareaAsignada(tarea: Tareas){
+  verTareaAsignada(tarea: Tareas) {
     this.backService.setCurrentTareasinAsignar(tarea);
     this.backService.setCurrentIsTareasinAsignar(false)
-    this.router.navigate(['create/editarTarea']);
+    this.router.navigate(['tarea/editarTarea']);
   }
-
 
 }

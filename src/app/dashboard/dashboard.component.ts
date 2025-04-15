@@ -5,6 +5,7 @@ import { BackService } from '../service/backservice';
 
 import { CommonModule } from '@angular/common';
 import { MenuComponent } from "../Shared/menu/menu.component";
+import { AuthService } from '../service/auth.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -16,13 +17,15 @@ export class DashboardComponent {
 
 
 
-  constructor(private readonly backService: BackService) {
-    this.GetTareas();
-    this.GetTareasAsignadas();
+  constructor(private readonly backService: BackService, private readonly auth: AuthService) {
+    if (this.auth.getCookies()?.IdRol==1) {
+      this.GetTareas();
+      this.GetTareasAsignadas();
+    }else{
+      this.GetTareasAsignadasUsuario();
+    }
+
   }
-
-
-
 
   GetTareas() {
     this.backService.GetAllTareas()
@@ -36,7 +39,6 @@ export class DashboardComponent {
       })
   }
 
-
   GetTareasAsignadas() {
     this.backService.GetAllTareasAsignadas()
       .subscribe({
@@ -49,9 +51,26 @@ export class DashboardComponent {
       })
   }
 
+  GetTareasAsignadasUsuario(){
+    const idUsuario : number| undefined = this.auth.getCookies()?.IdUsuario;
+    this.backService.GetTareasUsuario(idUsuario)
+    .subscribe({
+      next: (data) => {
+        this.backService.setCurrentTareasUsuario(data)
+      },
+      error: (error) => {
+
+      }
+    })
+  }
 
   UpdataLista() {
-    this.GetTareas();
+    if (this.auth.getCookies()?.IdRol==1) {
+      this.GetTareas();
+    }else{
+      this.GetTareasAsignadasUsuario();
+    }
+
   }
 
   UpdateAsignacionTareas(){

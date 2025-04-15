@@ -9,10 +9,10 @@ import { AuthService } from '../../service/auth.service';
   styleUrl: './menu.component.scss'
 })
 export class MenuComponent {
+  idRol: number |undefined =0
 
-  constructor(private readonly service: AuthService, public router: Router) {
-
-
+  constructor(private readonly service: AuthService, public router: Router, private readonly auth: AuthService) {
+    this.idRol = this.auth.getCookies()?.IdRol;
   }
 
 
