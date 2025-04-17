@@ -7,9 +7,9 @@
 
 
 .spinner-container {
-  position: absolute;
-  height: 40%;
-  width: 100%;
+  position: fixed; /* Cambia a fixed */
+  height: 100vh; /* 100% del viewport height */
+  width: 100vw; /* 100% del viewport width */
   display: flex;
   justify-content: center;
   align-items: center;
